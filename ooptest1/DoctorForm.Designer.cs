@@ -80,7 +80,6 @@ namespace ooptest1
             this.label1.Size = new System.Drawing.Size(176, 31);
             this.label1.TabIndex = 2;
             this.label1.Text = "Doctor Name";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -93,7 +92,6 @@ namespace ooptest1
             this.label2.Size = new System.Drawing.Size(92, 31);
             this.label2.TabIndex = 3;
             this.label2.Text = "Phone";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtDoctorName
             // 
@@ -110,7 +108,6 @@ namespace ooptest1
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(225, 26);
             this.txtPhone.TabIndex = 5;
-            this.txtPhone.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // txtClinic
             // 
@@ -131,7 +128,6 @@ namespace ooptest1
             this.label3.Size = new System.Drawing.Size(79, 31);
             this.label3.TabIndex = 7;
             this.label3.Text = "Clinic";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -141,8 +137,7 @@ namespace ooptest1
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(125, 32);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Next Visit";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            this.label4.Text = "Next Visit";fi
             // 
             // dtpNextVisit
             // 
