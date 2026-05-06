@@ -137,7 +137,7 @@ namespace ooptest1
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(125, 32);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Next Visit";fi
+            this.label4.Text = "Next Visit";
             // 
             // dtpNextVisit
             // 
