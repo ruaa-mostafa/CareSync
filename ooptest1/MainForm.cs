@@ -14,7 +14,7 @@ namespace ooptest1
     public partial class MainForm : Form
     {
 
-        private BindingList<Medication> meds = new BindingList<Medication>();
+        private BindingList<Medication> meds = new BindingList<Medication>(); 
 
 
         private string filePath = "medications.json";
@@ -27,44 +27,16 @@ namespace ooptest1
             LoadData();
         }
 
-        public MainForm()
-        {
-            InitializeComponent();
 
-            dataGridView1.BorderStyle = BorderStyle.None;
-            dataGridView1.BackgroundColor = Color.White;
-            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
-            dataGridView1.EnableHeadersVisualStyles = false;
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
-            dataGridView1.RowPrePaint += dataGridView1_RowPrePaint;
-        }
-
-
-       
-        private void AddButtonColumn()
-        {
-            if (!dataGridView1.Columns.Contains("Action"))
-            {
-                DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-
-                btn.Name = "Action";
-                btn.HeaderText = "Action";
-                btn.Text = "Taken";
-                btn.UseColumnTextForButtonValue = true;
-
-                dataGridView1.Columns.Add(btn);
-            }
-
-        }
-
-       private void LoadData()
+        private void LoadData()
         {
 
-            if (File.Exists(filePath))
+            if (File.Exists(filePath)) // check if it exists or not
             {
                 try
                 {
-                    string json = File.ReadAllText(filePath);
+                    // File handling
+                    string json = File.ReadAllText(filePath); // read file
                     var list = JsonSerializer.Deserialize<List<Medication>>(json) ?? new List<Medication>();
                     meds = new BindingList<Medication>(list);
                 }
@@ -79,6 +51,7 @@ namespace ooptest1
                 meds = new BindingList<Medication>();
 
             }
+
             //Array of object
 
             dataGridView1.DataSource = null;
@@ -86,19 +59,17 @@ namespace ooptest1
         }
 
 
-
-
         private void SaveMedications()
         {
+            // File handling
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true
             };
 
-            // Filter out null entries before saving
-            var listToSave = meds.Where(m => m != null).ToList();
+            var listToSave = meds.Where(m => m != null).ToList();  // Filter out null entries before saving
             string json = JsonSerializer.Serialize(listToSave, options);
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, json); // write data
         }
 
         //  ربط زر إضافة دواء بالكلاس
@@ -135,6 +106,22 @@ namespace ooptest1
 
         }
 
+        private void AddButtonColumn()
+        {
+            if (!dataGridView1.Columns.Contains("Action"))
+            {
+                DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
+
+                btn.Name = "Action";
+                btn.HeaderText = "Action";
+                btn.Text = "Taken";
+                btn.UseColumnTextForButtonValue = true;
+
+                dataGridView1.Columns.Add(btn);
+            }
+
+        }
+
         private void reminderTimer_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
@@ -148,10 +135,12 @@ namespace ooptest1
 
                 if (med.LastTakenDate.Date != now.Date && Math.Abs((now - medTime).TotalSeconds) <= 30)
                 {
+                    // Exception handling
+
                     try
                     {
                      
-                        string SoundPath = System.IO.Path.Combine(Application.StartupPath, "reminder.wav");
+                        string SoundPath = System.IO.Path.Combine(Application.StartupPath, "reminder.wav"); // Determine the audio file path
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(SoundPath);
                         player.Load();
                         player.PlaySync();
@@ -180,38 +169,36 @@ namespace ooptest1
 
             dataGridView1.Refresh();
         }
-      
-        //test
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        public MainForm()
         {
-            if (e.RowIndex < 0) return;
+            InitializeComponent();
 
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "Action")
-            {
-                var selectedMed = dataGridView1.Rows[e.RowIndex].DataBoundItem as Medication;
-                if (selectedMed != null)
-                {
-                    selectedMed.Status = MedStatus.Taken;
-                    selectedMed.LastTakenDate = DateTime.Now;
-                    SaveMedications();
-                    dataGridView1.Refresh();
-                }
-                return;
-            }
-
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "mdName")
-            {
-                var selectedMed = dataGridView1.Rows[e.RowIndex].DataBoundItem as Medication;
-                if (selectedMed != null)
-                {
-                    picPrescription.ImageLocation = selectedMed.PrescriptionPath;
-                    picPrescription.SizeMode = PictureBoxSizeMode.Zoom;
-                }
-            }
+            dataGridView1.BorderStyle = BorderStyle.None;
+            dataGridView1.BackgroundColor = Color.White;
+            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
+            dataGridView1.EnableHeadersVisualStyles = false;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView1.RowPrePaint += dataGridView1_RowPrePaint;
         }
 
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+            if (e.RowIndex < 0) return;
+
+            string columnName = dataGridView1.Columns[e.ColumnIndex].Name;
+            var selectedMed = dataGridView1.Rows[e.RowIndex].DataBoundItem as Medication;
+
+            if (selectedMed == null) return;
+            if (columnName == "Action")
+            {
+                selectedMed.Status = MedStatus.Taken; // Enum
+                selectedMed.LastTakenDate = DateTime.Now;
+                SaveMedications();
+                dataGridView1.Refresh();
+            }
+        }
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
@@ -297,25 +284,7 @@ namespace ooptest1
             lblDoctorName1.Text = "Doctor: " + doctor.Name;
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            if (e.RowIndex < 0) return; 
-
-            string columnName = dataGridView1.Columns[e.ColumnIndex].Name;
-            var selectedMed = dataGridView1.Rows[e.RowIndex].DataBoundItem as Medication;
-
-            if (selectedMed == null) return;
-            if (columnName == "Action")
-            {
-                selectedMed.Status = MedStatus.Taken; // Enum
-                selectedMed.LastTakenDate = DateTime.Now;
-                SaveMedications();
-                dataGridView1.Refresh(); 
-            }
-            
-           
-        }
+       
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {

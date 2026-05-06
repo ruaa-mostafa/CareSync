@@ -19,18 +19,15 @@ namespace ooptest1
         public int Strips { get; set; }
         public int Pills { get; set; }
 
-        public int CurrentStrips { get; set; }
-        public int CurrentPills { get; set; }
 
         public string Instructions { get; set; }
 
         public DateTime ReminderTime { get; set; }
-        public string Frequency { get; set; }
-        public string Notes { get; set; }
-        public string DoctorName { get; set; }
         public DateTime LastTakenDate { get; set; }
   
         public MedStatus Status { get; set; } = MedStatus.Pending;
+
+        public string PrescriptionPath { get; set; }
 
 
         public Medication(string name, string dosage, DateTime reminderTime,
@@ -44,9 +41,6 @@ namespace ooptest1
             Strips = strips;
             Pills = pills;
 
-            CurrentStrips = strips;
-            CurrentPills = pills;
-
             Instructions = instructions;
         }
 
@@ -55,8 +49,6 @@ namespace ooptest1
         {
 
         }
-
-        public string PrescriptionPath { get; set; }
     }
 
 }
